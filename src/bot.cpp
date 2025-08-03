@@ -1,3 +1,4 @@
+/*
 #include "DailyDoseOf241.hpp"
 #include <iostream>
 
@@ -6,3 +7,7 @@ const int64_t SashaId = 859762063;
 
 using json = nlohmann::json;
 
+int main() {
+    
+}
+*/
