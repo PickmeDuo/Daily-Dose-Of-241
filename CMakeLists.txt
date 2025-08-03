@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(PsychotypeBot LANGUAGES CXX)
+project(DailyDoseOf241 LANGUAGES CXX)
 
 # Настройки компилятора
 set(CMAKE_CXX_STANDARD 17)
@@ -21,7 +21,6 @@ include_directories(
 
 add_executable(${PROJECT_NAME}
     src/bot.cpp
-    src/helpers.cpp
 )
 
 # Подключаем заголовки
@@ -29,9 +28,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(PsychotypeBot
+target_link_libraries(DailyDoseOf241
     ${TGBOT_LIBRARY}
     ${Boost_LIBRARIES}
     ssl crypto ws2_32 crypt32
 )
-# endif()
