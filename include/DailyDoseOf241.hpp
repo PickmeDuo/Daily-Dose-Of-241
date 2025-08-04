@@ -1,10 +1,8 @@
 #ifndef DAILYDOSEOF241_HPP
 #define DAILYDOSEOF241_HPP
 
-#include "tasks.hpp"
-
 #include <tgbot/tgbot.h>
-#include <nlohmann/json.hpp>
+#include <SQLiteCpp/SQLiteCpp.h>
 
 #include <string>
 #include <vector>
@@ -12,6 +10,17 @@
 #include <memory>
 
 namespace DailyDoseOf241 {
+    // Возвращает текущую дату
+    std::string getCurrentDate();
+
+    // Создаёт ежедневный контент, если он ещё не создан.
+    bool getDailyContent();
+
+    // Возвращает случайный id объекта table из базы db.
+    int getRandomId(SQLite::Database& db, const std::string& table);
+
+
+
     class DDO241Bot {
     public:
         explicit DDO241Bot(const std::string& token);
@@ -30,7 +39,11 @@ namespace DailyDoseOf241 {
 
         // Вызывается на каждое сообщение (onAnyMessage)
         // Проверяет, есть ли человек с ником username в базе по чату chat_id, если нет, добавляет.
-        void addPerson(const std::string& username, const int64_t chat_id);
+        bool addUser(const std::string& username);
+
+        // Вызывается по команде /addQuote (ответом на сообщение)
+        // Добавляет цитату (сообщение, на которое ответили командой) в базу.
+        bool addQuote(const std::string& quote, const std::string& author);
 
         // Вызывается по команде /task
         // Возвращает случайное задание для случайного пользователя.
@@ -40,10 +53,6 @@ namespace DailyDoseOf241 {
         // Возвращает случайную цитату из добавленных.
         std::string quoteOfTheDay();
 
-        // Вызывается по команде /addQuote (ответом на сообщение)
-        // Добавляет цитату (сообщение, на которое ответили командой) в базу.
-        void addQuote(const std::string& quote);
-
         // Вызывается по команде /pic
         // Возвращает путь к случайной картинке.
         std::string picOfTheDay();
@@ -51,7 +60,6 @@ namespace DailyDoseOf241 {
 
         // Можешь сделать это кнопками, или вообще как хочешь. Звони крч
     };
-
 } 
 
 #endif
