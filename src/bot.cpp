@@ -63,10 +63,7 @@ void DDO241Bot::start() {
         }
 
         try {
-            TgBot::InputFile::Ptr photo(new TgBot::InputFile);
-            photo->data = std::make_shared<std::ifstream>(path, std::ios::binary);
-            photo->fileName = path.substr(path.find_last_of("/\\") + 1);
-
+            TgBot::InputFile::Ptr photo = TgBot::InputFile::fromFile(path, "image/jpg");
             bot->getApi().sendPhoto(message->chat->id, photo);
         }
         catch (const std::exception& e) {
