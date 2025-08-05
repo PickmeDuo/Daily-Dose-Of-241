@@ -31,7 +31,7 @@ void DDO241Bot::start() {
             return;
         }
         std::string quote = message->replyToMessage->text;
-        std::string author = message->from->username;
+        std::string author = message->replyToMessage->from->username;
         if (addQuote(quote, author)) {
             bot->getApi().sendMessage(message->chat->id, "Цитата добавлена!");
         } else {
