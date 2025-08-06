@@ -115,17 +115,17 @@ void DDO241Bot::start() {
                 std::string username = userM.substr(1);
 
                 if (taskDoneSpecificUser(username)) {
-                    bot->getApi().sendMessage(message->chat->id, "Папочка Окси доволен!";
+                    bot->getApi().sendMessage(message->chat->id, "Папочка Окси доволен!");
                 } else {
-                    bot->getApi().sendMessage(message->chat->id, "Анлаки(((";
+                    bot->getApi().sendMessage(message->chat->id, "Анлаки(((");
                 }
 
             } else {
-                bot->getApi().sendMessage(message->chat->id, "Пожалуйста, указывайте пользователя в формате @username.";
+                bot->getApi().sendMessage(message->chat->id, "Пожалуйста, указывайте пользователя в формате @username.");
             }
 
         } else {
-            bot->getApi().sendMessage(message->chat->id, "Использование: /addPoint @username"
+            bot->getApi().sendMessage(message->chat->id, "Использование: /addPoint @username");
         }
     });
 
