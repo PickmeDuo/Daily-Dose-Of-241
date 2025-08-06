@@ -104,3 +104,17 @@ void DDO241Bot::start() {
         std::cerr << "Ошибка в работе бота: " << e.what() << std::endl;
     }
 }
+
+
+int main() {
+    try {
+        std::string token = "8058398407:AAFt2kqAb_UqUJOxN2sSCMJtpyzDBFwbMQY";
+        DailyDoseOf241::DDO241Bot bot(token);
+        bot.start();
+    } catch (const std::exception& e) {
+        std::cerr << "Ошибка при запуске бота: " << e.what() << std::endl;
+        return 1;
+    }
+
+    return 0;
+}
