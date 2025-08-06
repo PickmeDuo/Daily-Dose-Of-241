@@ -100,6 +100,13 @@ void DDO241Bot::start() {
         }
     });
 
+
+    // /rating
+    b.getEvents().onCommand("rating", [this](TgBot::Message::Ptr message) {
+        std::string response = rating();
+        bot->getApi().sendMessage(message->chat->id, response);
+    });
+
     // Обработка любого сообщения 
     b.getEvents().onAnyMessage([this](TgBot::Message::Ptr message) {
         if (message->text.empty()) return;
