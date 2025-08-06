@@ -1,5 +1,6 @@
 #include "DailyDoseOf241.hpp"
 #include <iostream>
+#include <sstream>
 
 using namespace DailyDoseOf241;
 
@@ -112,7 +113,7 @@ void DDO241Bot::start() {
             bot->getApi().sendMessage(message->chat->id, "Ты не папочка Окси!");
             return;
         }
-        
+
         if (!message->text.empty()) {
             std::isstringstream iss(message->text);
             std::string cmd, userM;
