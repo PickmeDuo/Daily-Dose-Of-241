@@ -57,9 +57,9 @@ namespace DailyDoseOf241 {
         // Возвращает путь к случайной картинке.
         std::string picOfTheDay();
 
-        // Вызывается по команде /addPoint @user
-        // Отмечает задание выполненным для @user
-        bool taskDoneSpecificUser();
+        // Вызывается по команде /addPoint @username
+        // Отмечает задание выполненным для @username
+        bool taskDoneSpecificUser(const std::string& username);
 
         // Вызывается по команде /done только Сашей или Сеней.
         // Отмечает задание выполненным.
