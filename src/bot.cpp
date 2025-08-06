@@ -86,6 +86,20 @@ void DDO241Bot::start() {
     });
 
 
+    // /done
+    b.getEvents().onCommand("done", [this](TgBot::Message::Ptr message) {
+        std::string username = message->from->username;
+        if (username == "eduardade" || username == "senyastrokov") {
+            if (taskDone()) {
+                bot->getApi().sendMessage(message->chat->id, "Детка, ты выполнила задание на 5+!");
+            } else {
+                bot->getApi().sendMessage(message->chat->id, "Ошибка при отметке задания.");
+            }
+        } else {
+            bot->getApi().sendMessage(message->chat->id, "Ты не папочка Окси!");
+        }
+    });
+
     // Обработка любого сообщения 
     b.getEvents().onAnyMessage([this](TgBot::Message::Ptr message) {
         if (message->text.empty()) return;
