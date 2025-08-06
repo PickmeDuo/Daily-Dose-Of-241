@@ -273,7 +273,24 @@ namespace DailyDoseOf241 {
             updateUser.exec();
         }
         catch (const std::exception& e) {
-            std::cerr << "Error getting username: " << e.what() << std::endl;
+            std::cerr << "Error updating rating: " << e.what() << std::endl;
+            return false;
+        }
+        return true;
+    }
+
+    bool DDO241Bot::taskDoneSpecificUser(const std::string& username) {
+        SQLite::Database db("daily_dose.db", SQLite::OPEN_READWRITE);
+        try {
+            SQLite::Statement updateUser(db,
+                "UPDATE users "
+                "SET tasks_completed = tasks_completed + 1 "
+                "WHERE username = ?");
+            updateUser.bind(1, username);
+            updateUser.exec();
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Error updating rating: " << e.what() << std::endl;
             return false;
         }
         return true;
