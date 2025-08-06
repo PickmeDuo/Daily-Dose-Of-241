@@ -18,18 +18,19 @@ namespace DailyDoseOf241 {
         std::string today = getCurrentDate();
         
         SQLite::Database db("daily_dose.db", SQLite::OPEN_READWRITE);
-        
+
         // Пробуем получить контент за сегодня
         SQLite::Statement query(db,
             "SELECT quote_id, task_id, user_id, photo_id "
-            "FROM daily_content"
-            "WHERE date = ?");
+            " FROM daily_content"
+            " WHERE date = ?");
         query.bind(1, today);
         
         if (query.executeStep()) {
             // Контент на сегодня уже есть
             return true;
         }
+
         
         // Если контента нет - создаём новый
         SQLite::Transaction transaction(db);
@@ -40,6 +41,7 @@ namespace DailyDoseOf241 {
             int task_id = getRandomId(db, "tasks");
             int user_id = getRandomId(db, "users");
             int photo_id = getRandomId(db, "photos");
+
             
             // Сохраняем в daily_content
             SQLite::Statement insert(db,
@@ -51,6 +53,7 @@ namespace DailyDoseOf241 {
             insert.bind(4, user_id);
             insert.bind(5, photo_id);
             insert.exec();
+
             
             transaction.commit();
             return true;
@@ -66,11 +69,9 @@ namespace DailyDoseOf241 {
         SQLite::Statement query(db,
             "SELECT id FROM " + table + 
             " ORDER BY RANDOM() LIMIT 1");
-        
         if (!query.executeStep()) {
             throw std::runtime_error("No available content in " + table);
         }
-        
         return query.getColumn(0).getInt();
     }
 
@@ -94,7 +95,7 @@ namespace DailyDoseOf241 {
     bool DDO241Bot::addQuote(const std::string& quote, const std::string& author) {
         try {
             SQLite::Database db("daily_dose.db", SQLite::OPEN_READWRITE);
-            SQLite::Statement insert(db, "INSERT INTO quotes (text) VALUES (?, ?)");
+            SQLite::Statement insert(db, "INSERT INTO quotes (text, author) VALUES (?, ?)");
             insert.bind(1, quote);
             insert.bind(2, author);
             insert.exec();
@@ -122,7 +123,7 @@ namespace DailyDoseOf241 {
             // Берём id сегодняшнего пользователя
             SQLite::Statement id_query(db, 
                 "SELECT user_id FROM daily_content"
-                "WHERE date = ?");
+                " WHERE date = ?");
             id_query.bind(1, today);
             id_query.executeStep();
             int id = id_query.getColumn(0).getInt();
@@ -148,7 +149,7 @@ namespace DailyDoseOf241 {
             // Берём id сегодняшнего задания
             SQLite::Statement id_query(db, 
                 "SELECT task_id FROM daily_content"
-                "WHERE date = ?");
+                " WHERE date = ?");
             id_query.bind(1, today);
             id_query.executeStep();
             int id = id_query.getColumn(0).getInt();
@@ -182,7 +183,7 @@ namespace DailyDoseOf241 {
             // Берём id сегодняшней цитаты
             SQLite::Statement id_query(db, 
                 "SELECT quote_id FROM daily_content"
-                "WHERE date = ?");
+                " WHERE date = ?");
             id_query.bind(1, today);
             id_query.executeStep();
             int id = id_query.getColumn(0).getInt();
@@ -208,13 +209,12 @@ namespace DailyDoseOf241 {
             return "Ошибка при создании контента дня.";
         }
         std::string today = getCurrentDate();
-
         try {
             SQLite::Database db("daily_dose.db", SQLite::OPEN_READONLY);
             // Берём id сегодняшней картинки
             SQLite::Statement id_query(db, 
                 "SELECT photo_id FROM daily_content"
-                "WHERE date = ?");
+                " WHERE date = ?");
             id_query.bind(1, today);
             id_query.executeStep();
             int id = id_query.getColumn(0).getInt();

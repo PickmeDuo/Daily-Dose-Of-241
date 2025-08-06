@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(UtrobisheBot LANGUAGES CXX)
+project(DailyDoseOf241 LANGUAGES CXX)
 
 # Настройки компилятора
 set(CMAKE_CXX_STANDARD 17)
@@ -37,7 +37,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 # Для основного проекта
-target_link_libraries(UtrobisheBot
+target_link_libraries(DailyDoseOf241
     ${TGBOT_LIBRARY}
     ${Boost_LIBRARIES}
     SQLiteCpp
