@@ -106,6 +106,13 @@ void DDO241Bot::start() {
 
     // /addPoint
     b.getEvents().onCommand("addPoint", [this](TgBot::Message::Ptr message) {
+        std::string caller = message->from->username;
+
+        if(caller != "eduardade" && caller != "senyastrokov") {
+            bot->getApi().sendMessage(message->chat->id, "Ты не папочка Окси!");
+            return;
+        }
+        
         if (!message->text.empty()) {
             std::isstringstream iss(message->text);
             std::string cmd, userM;
