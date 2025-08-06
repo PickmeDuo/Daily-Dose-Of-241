@@ -232,4 +232,71 @@ namespace DailyDoseOf241 {
             return "Ошибка при выборе картинки дня.";
         }
     }
+
+    bool taskDone() {
+        if (!getDailyContent()) {
+            return "Ошибка при создании контента дня.";
+        }
+        std::string today = getCurrentDate();
+
+        SQLite::Database db("daily_dose.db", SQLite::OPEN_READONLY);
+
+        std::string username = "";
+        try {
+            // Берём id сегодняшнего пользователя
+            SQLite::Statement id_query(db, 
+                "SELECT user_id FROM daily_content"
+                " WHERE date = ?");
+            id_query.bind(1, today);
+            id_query.executeStep();
+            int id = id_query.getColumn(0).getInt();
+
+            // Находим этого пользователя
+            SQLite::Statement query(db,
+                "SELECT username FROM users "
+                "WHERE id = ?");
+            query.bind(1, id);
+            query.executeStep();
+            username = query.getColumn(0).getString();
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Error getting username: " << e.what() << std::endl;
+            return false;
+        }
+        
+        try {
+            SQLite::Statement updateUser(db,
+                "UPDATE users "
+                "SET tasks_completed = tasks_completed + 1 "
+                "WHERE username = ?");
+            updateUser.bind(1, username);
+            updateUser.exec();
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Error getting username: " << e.what() << std::endl;
+            return false;
+        }
+        return true;
+    }
+
+    std::string rating() {
+        try {
+            SQLite::Database db("daily_dose.db", SQLite::OPEN_READONLY);
+            SQLite::Statement query(db,
+                "SELECT username, tasks_completed "
+                "FROM users "
+                "ORDER BY tasks_completed DESC, username ASC");
+            std::string result = "Рейтинг по выполненным заданиям:";
+            while (query.executeStep()) {
+                std::string username = query.getColumn(0).getString();
+                int tasks = query.getColumn(1).getInt();
+                result += "username: " + std::to_string(tasks) + "\n";
+            }
+            return result;
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Error getting rating: " << e.what() << std::endl;
+            return "Ошибка при получении рейтинга.";
+        }
+    }
 }
