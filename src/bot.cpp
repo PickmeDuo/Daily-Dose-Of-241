@@ -81,6 +81,7 @@ void DDO241Bot::start() {
         /quote — получить цитату дня
         /task — получить задание дня
         /done — отметить задание выполненным (только Саша и Сеня)
+        /addPoint — отметить выполнение задания за другого пользователя (только Саша и Сеня)
         /rating — рейтинг участников
         /pic — получить картинку дня)";
 
@@ -99,6 +100,32 @@ void DDO241Bot::start() {
             }
         } else {
             bot->getApi().sendMessage(message->chat->id, "Ты не папочка Окси!");
+        }
+    });
+
+
+    // /addPoint
+    b.getEvents().onCommand("addPoint", [this](TgBot::Message::Ptr message) {
+        if (!message->text.empty()) {
+            std::isstringstream iss(message->text);
+            std::string cmd, userM;
+            iss >> cmd >> userM;
+
+            if (!userM.empty() && userM[0] == '@') {
+                std::string username = userM.substr(1);
+
+                if (taskDoneSpecificUser(username)) {
+                    bot->getApi().sendMessage(message->chat->id, "Папочка Окси доволен!";
+                } else {
+                    bot->getApi().sendMessage(message->chat->id, "Анлаки(((";
+                }
+
+            } else {
+                bot->getApi().sendMessage(message->chat->id, "Пожалуйста, указывайте пользователя в формате @username.";
+            }
+
+        } else {
+            bot->getApi().sendMessage(message->chat->id, "Использование: /addPoint @username"
         }
     });
 
