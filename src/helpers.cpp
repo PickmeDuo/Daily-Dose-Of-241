@@ -233,13 +233,13 @@ namespace DailyDoseOf241 {
         }
     }
 
-    bool taskDone() {
+    bool DDO241Bot::taskDone() {
         if (!getDailyContent()) {
             return "Ошибка при создании контента дня.";
         }
         std::string today = getCurrentDate();
 
-        SQLite::Database db("daily_dose.db", SQLite::OPEN_READONLY);
+        SQLite::Database db("daily_dose.db", SQLite::OPEN_READWRITE);
 
         std::string username = "";
         try {
@@ -279,18 +279,18 @@ namespace DailyDoseOf241 {
         return true;
     }
 
-    std::string rating() {
+    std::string DDO241Bot::rating() {
         try {
             SQLite::Database db("daily_dose.db", SQLite::OPEN_READONLY);
             SQLite::Statement query(db,
                 "SELECT username, tasks_completed "
                 "FROM users "
                 "ORDER BY tasks_completed DESC, username ASC");
-            std::string result = "Рейтинг по выполненным заданиям:";
+            std::string result = "Рейтинг по выполненным заданиям:\n";
             while (query.executeStep()) {
                 std::string username = query.getColumn(0).getString();
                 int tasks = query.getColumn(1).getInt();
-                result += "username: " + std::to_string(tasks) + "\n";
+                result += username + ": " + std::to_string(tasks) + "\n";
             }
             return result;
         }
