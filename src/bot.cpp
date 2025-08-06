@@ -80,6 +80,8 @@ void DDO241Bot::start() {
         /addQuote — добавить цитату (в ответ на сообщение)
         /quote — получить цитату дня
         /task — получить задание дня
+        /done — отметить задание выполненным (только Саша и Сеня)
+        /rating — рейтинг участников
         /pic — получить картинку дня)";
 
         bot->getApi().sendMessage(message->chat->id, helpText);
@@ -106,6 +108,7 @@ void DDO241Bot::start() {
         std::string response = rating();
         bot->getApi().sendMessage(message->chat->id, response);
     });
+
 
     // Обработка любого сообщения 
     b.getEvents().onAnyMessage([this](TgBot::Message::Ptr message) {
