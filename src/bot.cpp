@@ -115,7 +115,7 @@ void DDO241Bot::start() {
         }
 
         if (!message->text.empty()) {
-            std::isstringstream iss(message->text);
+            std::istringstream iss(message->text);
             std::string cmd, userM;
             iss >> cmd >> userM;
 
