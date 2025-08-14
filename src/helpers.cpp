@@ -20,15 +20,31 @@ namespace DailyDoseOf241 {
         SQLite::Database db("daily_dose.db", SQLite::OPEN_READWRITE);
 
         // Пробуем получить контент за сегодня
+        // Смотрим есть ли контент в базе, если есть и дата прошлая, удаляем и делаем новый.
         SQLite::Statement query(db,
-            "SELECT quote_id, task_id, user_id, photo_id "
-            " FROM daily_content"
-            " WHERE date = ?");
-        query.bind(1, today);
+            "SELECT date, quote_id, task_id, user_id, photo_id "
+            " FROM daily_content");
         
         if (query.executeStep()) {
-            // Контент на сегодня уже есть
-            return true;
+            std::string query_date = query.getColumn(0).getString();
+            if (query_date == today) {
+                // Контент на сегодня уже есть
+                return true;
+            } else {
+                int tid = query.getColumn(2).getInt();
+                int pid = query.getColumn(4).getInt();
+
+                SQLite::Statement query1(db, "DELETE FROM tasks WHERE id = ?");
+                query1.bind(1, tid);
+                query1.exec();
+
+                SQLite::Statement query2(db, "DELETE FROM photos WHERE id = ?");
+                query2.bind(1, pid);
+                query2.exec();
+
+                db.exec("DELETE FROM daily_content");  // Очищаем таблицу daily_content
+                db.exec("UPDATE sqlite_sequence SET seq = 0 WHERE name = 'daily_content'");
+            }
         }
 
         
@@ -73,6 +89,10 @@ namespace DailyDoseOf241 {
             throw std::runtime_error("No available content in " + table);
         }
         return query.getColumn(0).getInt();
+    }
+
+    void delete_from(SQLite::Database& db, const std::string& table, const int& id) {
+
     }
 
 

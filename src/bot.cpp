@@ -167,7 +167,7 @@ void DDO241Bot::start() {
 
 int main() {
     try {
-        std::string token = "8058398407:AAFt2kqAb_UqUJOxN2sSCMJtpyzDBFwbMQY";
+        std::string token = "BOT_TOKEN";
         DailyDoseOf241::DDO241Bot bot(token);
         bot.start();
     } catch (const std::exception& e) {
